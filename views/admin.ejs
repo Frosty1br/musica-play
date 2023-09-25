@@ -29,12 +29,6 @@
             <label for="name">Nome:</label>
             <input type="text" name="name" id="name">
 
-            <label for="author">Autor:</label>
-            <input type="text" name="author" id="author">
-
-            <label for="linkImage">Link da Imagem:</label>
-            <input type="text" name="linkImage" id="linkImage">
-
             <label for="linkMusic">Link da Música:</label>
             <input type="text" name="linkMusic" id="linkMusic">
 
@@ -59,14 +53,14 @@
 
                 <tbody>
 
-                    <% playlist.forEach((music)=> { %>
+                    <% datadb.forEach((music)=> { %>
                         <tr class="musics">
-                            <td><img src="<%= music.linkImage %>" alt="Imagem da musica"></td>
+                            <td><img src="<%= music.LinkImage %>" alt="Imagem da musica"></td>
                             <td>
-                                <%= music.name %>
+                                <%= music.NameMusic %>
                             </td>
                             <td>
-                                <%= music.author %>
+                                <%= music.NameAuthor %>
                             </td>
                             <td id="actions">
                                 <a id="edit" href="/by/<%= music._id %>/edit">Editar</a>
@@ -86,16 +80,10 @@
                 <a id="close-modal" href="/admin"><i class="bi bi-x-lg"></i></a>
                 <h2>Editar Musica</h2>
                 <hr>
-
+                
                 <form id="form-modal" method="post" action="/update/<%= music._id %>">
                     <label for="name">Nome:</label>
                     <input type="text" name="name" id="name" value="<%= music.name %>">
-        
-                    <label for="author">Autor:</label>
-                    <input type="text" name="author" id="author" value="<%= music.author %>">
-        
-                    <label for="linkImage">Link da Imagem:</label>
-                    <input type="text" name="linkImage" id="linkImage" value="<%= music.linkImage %>">
         
                     <label for="linkMusic">Link da Música:</label>
                     <input type="text" name="linkMusic" id="linkMusic" value="<%= music.linkMusic %>">

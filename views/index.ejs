@@ -46,17 +46,17 @@
 
                 <tbody>
 
-                    <% playlist.forEach((music)=> { %>
+                    <% datadb.forEach((music)=> { %>
                         <tr class="musics">
-                            <td><img src="<%= music.linkImage %>" alt="Imagem da musica"></td>
+                            <td><img src="<%= music.LinkImage %>" alt="Imagem da musica"></td>
                             <td>
-                                <%= music.name %>
+                                <%= music.NameMusic %>
                             </td>
                             <td>
-                                <%= music.author %>
+                                <%= music.NameAuthor %>
                             </td>
                             <td>
-                                <audio controls class="audio " src="<%= music.linkMusic %>"></audio>
+                                <audio class="audio " src="<%= music.LinkMusic %>"></audio>
                             </td>
                         </tr>
                         <% }) %>
