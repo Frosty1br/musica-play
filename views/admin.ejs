@@ -26,11 +26,9 @@
         <h2>Cadastre uma nova música</h2>
 
         <form action="/create" method="post">
-            <label for="name">Nome:</label>
-            <input type="text" name="name" id="name">
 
             <label for="linkMusic">Link da Música:</label>
-            <input type="text" name="linkMusic" id="linkMusic">
+            <input type="text" name="LinkMusic" id="linkMusic">
 
             <button type="submit">Cadastrar</button>
         </form>
@@ -53,7 +51,7 @@
 
                 <tbody>
 
-                    <% datadb.forEach((music)=> { %>
+                    <% playlist.forEach((music)=> { %>
                         <tr class="musics">
                             <td><img src="<%= music.LinkImage %>" alt="Imagem da musica"></td>
                             <td>
@@ -83,10 +81,10 @@
                 
                 <form id="form-modal" method="post" action="/update/<%= music._id %>">
                     <label for="name">Nome:</label>
-                    <input type="text" name="name" id="name" value="<%= music.name %>">
+                    <input type="text" name="NameMusic" id="name" value="<%= music.NameMusic %>">
         
                     <label for="linkMusic">Link da Música:</label>
-                    <input type="text" name="linkMusic" id="linkMusic" value="<%= music.linkMusic %>">
+                    <input type="text" name="LinkMusic" id="linkMusic" value="<%= music.LinkMusic %>">
         
                     <button type="submit">Atualizar</button>
                 </form>
@@ -102,7 +100,7 @@
                 <a id="close-modal" href="/admin"><i class="bi bi-x-lg"></i></a>
                 <h2>Confirmação</h2>
                 <hr>
-                <p>Deseja realmente apagar a musica <%= musicDel.name %></p>
+                <p>Deseja realmente apagar a musica <%= musicDel.NameMusic %></p>
                 <div id="btn-confirm">
                     <a id="no" href="/admin">Não</a>
                     <a id="yes" href="/delete/<%= musicDel._id %>">Sim</a>

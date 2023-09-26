@@ -30,17 +30,18 @@ app.get("/", async (req, res) => {
     const playlist = await Music.find();
     const dadosCombinados = [];
     for (let i in playlist) {
-      const LinkYtMusic = playlist[i].linkMusic;
+      const LinkYtMusic = playlist[i].LinkMusic;
       const Info = await ytdl.getInfo(LinkYtMusic);
       const AudioFormats = ytdl.filterFormats(Info.formats, "audioonly");
 
       const Data = {
         _id: playlist[i]._id,
-        NameMusic: Info.videoDetails.title,
-        NameAuthor: "N/A",
-        LinkImage: Info.videoDetails.thumbnails[0].url,
+        NameMusic: playlist[i].NameMusic,
+        NameAuthor: playlist[i].NameAuthor,
+        LinkImage: playlist[i].LinkImage,
         LinkMusic: AudioFormats[0].url,
       };
+
       dadosCombinados.push(Data);
 
       const dadosJuntos = [].concat(...dadosCombinados);
@@ -90,27 +91,8 @@ app.post("/login", async (req, res) => {
 app.get("/admin", async (req, res) => {
   if (req.session.login) {
     const playlist = await Music.find();
-    const dadosCombinados = [];
-    for (let i in playlist) {
-      const LinkYtMusic = playlist[i].linkMusic;
-      const Info = await ytdl.getInfo(LinkYtMusic);
-      const AudioFormats = ytdl.filterFormats(Info.formats, "audioonly");
 
-      const Data = {
-        _id: playlist[i]._id,
-        NameMusic: Info.videoDetails.title,
-        NameAuthor: "N/A",
-        LinkImage: Info.videoDetails.thumbnails[0].url,
-        LinkMusic: AudioFormats[0].url,
-      };
-      dadosCombinados.push(Data);
-
-      const dadosJuntos = [].concat(...dadosCombinados);
-    }
-
-    const datadb = dadosCombinados;
-
-    res.render("admin", { playlist, datadb, music: null, musicDel: null });
+    res.render("admin", { playlist, music: null, musicDel: null });
   } else {
     res.redirect("login");
   }
@@ -119,7 +101,16 @@ app.get("/admin", async (req, res) => {
 app.post("/create", async (req, res) => {
   if (req.session.login) {
     const music = req.body;
-    await Music.create(music);
+
+    const Info = await ytdl.getInfo(music.LinkMusic);
+    const Data = {
+      NameMusic: Info.videoDetails.title,
+      NameAuthor: "N/A",
+      LinkImage: Info.videoDetails.thumbnails[0].url,
+      LinkMusic: music.LinkMusic,
+    };
+
+    await Music.create(Data);
     res.redirect("/");
   } else {
     res.redirect("login");
@@ -131,28 +122,9 @@ app.get("/by/:id/:action", async (req, res) => {
     const { id, action } = req.params;
     music = await Music.findById({ _id: id });
     const playlist = await Music.find();
-    const dadosCombinados = [];
-    for (let i in playlist) {
-      const LinkYtMusic = playlist[i].linkMusic;
-      const Info = await ytdl.getInfo(LinkYtMusic);
-      const AudioFormats = ytdl.filterFormats(Info.formats, "audioonly");
-
-      const Data = {
-        _id: playlist[i]._id,
-        NameMusic: Info.videoDetails.title,
-        NameAuthor: "N/A",
-        LinkImage: Info.videoDetails.thumbnails[0].url,
-        LinkMusic: AudioFormats[0].url,
-      };
-      dadosCombinados.push(Data);
-
-      const dadosJuntos = [].concat(...dadosCombinados);
-    }
-
-    const datadb = dadosCombinados;
 
     if (action == "edit") {
-      res.render("admin", { playlist, datadb, music, musicDel: null });
+      res.render("admin", {playlist, music, musicDel: null });
     } else {
       res.render("admin", { playlist, datadb, music: null, musicDel: music });
     }
@@ -164,7 +136,17 @@ app.get("/by/:id/:action", async (req, res) => {
 app.post("/update/:id", async (req, res) => {
   if (req.session.login) {
     const newMusic = req.body;
-    await Music.updateOne({ _id: req.params.id }, newMusic);
+
+    const LinkYtMusic = newMusic.LinkMusic;
+    const Info = await ytdl.getInfo(LinkYtMusic);
+
+    const Data = {
+      NameMusic: Info.videoDetails.title,
+      NameAuthor: "N/A",
+      LinkImage: Info.videoDetails.thumbnails[0].url,
+      LinkMusic: newMusic.LinkMusic,
+    };
+    await Music.updateOne({ _id: req.params.id }, Data);
     res.redirect("/admin");
   } else {
     res.redirect("login");
@@ -183,3 +165,47 @@ app.get("/delete/:id", async (req, res) => {
 app.listen(port, () =>
   console.log(`Servidor rodando em http://localhost:${port}`)
 );
+
+
+
+// const Data = {
+      //   _id: playlist[i]._id,
+      //   NameMusic: Info.videoDetails.title,
+      //   NameAuthor: "N/A",
+      //   LinkImage: Info.videoDetails.thumbnails[0].url,
+      //   LinkMusic: AudioFormats[0].url,
+      // };
+
+
+
+
+
+    //   const playlist = await Music.find();
+    // const dadosCombinados = [];
+    // for (let i in playlist) {
+    //   const LinkYtMusic = playlist[i].LinkMusic;
+    //   const Info = await ytdl.getInfo(LinkYtMusic);
+    //   const AudioFormats = ytdl.filterFormats(Info.formats, "audioonly");
+
+      // const Data = {
+      //   _id: playlist[i]._id,
+      //   NameMusic: Info.videoDetails.title,
+      //   NameAuthor: "N/A",
+      //   LinkImage: Info.videoDetails.thumbnails[0].url,
+      //   LinkMusic: AudioFormats[0].url,
+      // };
+
+    //   const Data = {
+    //     _id: playlist[i]._id,
+    //     NameMusic: playlist[i].NameMusic,
+    //     NameAuthor: playlist[i].NameAuthor,
+    //     LinkImage: playlist[i].LinkImage,
+    //     LinkMusic: AudioFormats[0].url,
+    //   };
+
+    //   dadosCombinados.push(Data);
+
+    //   const dadosJuntos = [].concat(...dadosCombinados);
+    // }
+
+    // const datadb = dadosCombinados;

@@ -1,19 +1,19 @@
 const mongoose = require("mongoose");
 
 const musicSchema = new mongoose.Schema({
-  name: {
+  NameMusic: {
     type: String,
     require: true,
   },
-  author: {
+  NameAuthor: {
     type: String,
     require: true,
   },
-  linkImage: {
+  LinkImage: {
     type: String,
     require: true,
   },
-  linkMusic: {
+  LinkMusic: {
     type: String,
     require: true,
   },
