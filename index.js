@@ -121,12 +121,12 @@ app.get("/by/:id/:action", async (req, res) => {
   if (req.session.login) {
     const { id, action } = req.params;
     music = await Music.findById({ _id: id });
-    const playlist = await Music.find();
+    const playlist = await Music.find(); 
 
     if (action == "edit") {
       res.render("admin", {playlist, music, musicDel: null });
     } else {
-      res.render("admin", { playlist, datadb, music: null, musicDel: music });
+      res.render("admin", { playlist, music: null, musicDel: music });
     }
   } else {
     res.redirect("login");
